@@ -1,0 +1,6 @@
+date,scenario,final_esg_score,E_score,S_score,G_score
+2024-01-01,Baseline positive ESG communication,0.17574793,0.16877016,0.13312683,0.22534679
+2024-02-01,Environmental incident reported,0.4621668,0.48650032,0.45,0.45
+2024-03-01,Recovery and remediation news,0.3702062,0.21061856,0.45,0.45
+2024-04-01,Governance investigation,0.51545197,0.45,0.45,0.6463559
+2024-05-01,Green expansion announcement,0.43623438,0.40870327,0.45,0.45
