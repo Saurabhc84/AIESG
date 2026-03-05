@@ -118,71 +118,52 @@ st.dataframe(
 
 ## New code start
 
-base = alt.Chart(filtered).encode(
+  import altair as alt
+import pandas as pd
+
+filtered["date"] = pd.to_datetime(filtered["date"])
+
+# ESG score line
+line = alt.Chart(filtered).mark_line(
+    color="#1f77b4",
+    strokeWidth=3,
+    point=True
+).encode(
     x=alt.X(
         "date:T",
         title="Date",
-        axis=alt.Axis(
-            format="%d-%b",
-            labelAngle=-45,
-            grid=False
-        )
+        axis=alt.Axis(format="%d-%b", labelAngle=-45)
+    ),
+    y=alt.Y(
+        "final_esg_score:Q",
+        title="ESG Score",
+        scale=alt.Scale(domain=[0,100])
     ),
     tooltip=[
-        alt.Tooltip("scenario:N", title="Scenario"),
         alt.Tooltip("date:T", title="Date", format="%d-%b-%Y"),
-        alt.Tooltip("final_esg_score:Q", title="Total ESG Score", format=".2f")
+        alt.Tooltip("final_esg_score:Q", title="ESG Score", format=".2f"),
+        alt.Tooltip("news_count:Q", title="News Volume")
     ]
 )
 
-line_total = base.mark_line(
-    point=True,
-    strokeWidth=3
+# News volume bars
+bars = alt.Chart(filtered).mark_bar(
+    color="#c7c7c7",
+    opacity=0.4
 ).encode(
+    x="date:T",
     y=alt.Y(
-        "final_esg_score:Q",
-        title="Total ESG Score",
-        scale=alt.Scale(domain=[0, 100])
+        "news_count:Q",
+        title="News Volume"
     )
 )
 
-st.altair_chart(line_total, use_container_width=True)
-
-##New Code end
-
-nearest = alt.selection_point(nearest=True, on="mouseover", fields=["date"], empty=False)
-
-line = alt.Chart(filtered).mark_line(strokeWidth=3).encode(
-    x=alt.X("date:T", axis=alt.Axis(format="%d-%b", labelAngle=-45)),
-    y=alt.Y("final_esg_score:Q", title="Total ESG Score"),
+# Combine with independent axes
+chart = alt.layer(
+    bars,
+    line
+).resolve_scale(
+    y='independent'
 )
-
-points = line.mark_circle(size=80).encode(
-    opacity=alt.condition(nearest, alt.value(1), alt.value(0))
-).add_params(nearest)
-
-tooltips = alt.Chart(filtered).mark_rule(color="gray").encode(
-    x="date:T",
-    opacity=alt.condition(nearest, alt.value(0.4), alt.value(0)),
-    tooltip=[
-        alt.Tooltip("date:T", format="%d-%b-%Y"),
-        alt.Tooltip("final_esg_score:Q", title="ESG Score", format=".2f")
-    ],
-).add_params(nearest)
-
-chart = line + points + tooltips
 
 st.altair_chart(chart, use_container_width=True)
-
-
-
-line_total = alt.Chart(filtered).mark_line(point=True, strokeWidth=3).encode(
-    x=alt.X("date:T", axis=alt.Axis(format="%d-%b", labelAngle=-45)),
-    y=alt.Y("final_esg_score:Q", title="Total ESG Score"),
-    color=alt.condition(
-        alt.datum.final_esg_score >= 70,
-        alt.value("#2ca02c"),  # green
-        alt.value("#d62728")   # red
-    ),
-    tooltip=["date:T", "final_esg_score"]
-)
