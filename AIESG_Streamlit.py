@@ -82,6 +82,30 @@ st.altair_chart(line_total, use_container_width=True)
 
 ##New Code end
 
+nearest = alt.selection_point(nearest=True, on="mouseover", fields=["date"], empty=False)
+
+line = alt.Chart(filtered).mark_line(strokeWidth=3).encode(
+    x=alt.X("date:T", axis=alt.Axis(format="%d-%b", labelAngle=-45)),
+    y=alt.Y("final_esg_score:Q", title="Total ESG Score"),
+)
+
+points = line.mark_circle(size=80).encode(
+    opacity=alt.condition(nearest, alt.value(1), alt.value(0))
+).add_params(nearest)
+
+tooltips = alt.Chart(filtered).mark_rule(color="gray").encode(
+    x="date:T",
+    opacity=alt.condition(nearest, alt.value(0.4), alt.value(0)),
+    tooltip=[
+        alt.Tooltip("date:T", format="%d-%b-%Y"),
+        alt.Tooltip("final_esg_score:Q", title="ESG Score", format=".2f")
+    ],
+).add_params(nearest)
+
+chart = line + points + tooltips
+
+st.altair_chart(chart, use_container_width=True)
+
 """
 # ----------------------------------------------------
 # Main ESG score chart
