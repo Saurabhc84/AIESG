@@ -55,10 +55,13 @@ filtered = df[
 st.subheader("Total ESG score (news driven)")
 
 base = alt.Chart(filtered).encode(
-    x=alt.X("date:T", title="Date"),
+    x=alt.X(
+        "date:T",
+        title="Date",
+        axis=alt.Axis(format="%Y-%m-%d")  # or "%d-%b-%Y"
+    ),
     tooltip=["scenario", "date", "final_esg_score"]
 )
-
 line_total = base.mark_line(point=True).encode(
     y=alt.Y("final_esg_score:Q", title="Total ESG score")
 )
