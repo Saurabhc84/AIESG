@@ -119,7 +119,7 @@ line_total = alt.Chart(filtered).mark_line(point=True, strokeWidth=3).encode(
     tooltip=["date:T", "final_esg_score"]
 )
 
-"""
+
 # ----------------------------------------------------
 # Main ESG score chart
 # ----------------------------------------------------
@@ -184,4 +184,4 @@ st.dataframe(
     ],
     use_container_width=True
 )
-"""
+
