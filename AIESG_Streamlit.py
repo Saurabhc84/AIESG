@@ -50,7 +50,6 @@ filtered = df[
 ]
 
 
-"""
 # ----------------------------------------------------
 # Main ESG score chart
 # ----------------------------------------------------
@@ -69,7 +68,7 @@ line_total = base.mark_line(point=True).encode(
 )
 
 st.altair_chart(line_total, use_container_width=True)
-"""
+
 # ----------------------------------------------------
 # Small multiple charts for E, S, G
 # ----------------------------------------------------
