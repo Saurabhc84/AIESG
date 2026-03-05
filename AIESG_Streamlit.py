@@ -49,6 +49,7 @@ filtered = df[
     (df["scenario"].isin(selected_scenarios))
 ]
 ## New code start
+
 base = alt.Chart(filtered).encode(
     x=alt.X(
         "date:T",
@@ -81,7 +82,7 @@ st.altair_chart(line_total, use_container_width=True)
 
 ##New Code end
 
-
+"""
 # ----------------------------------------------------
 # Main ESG score chart
 # ----------------------------------------------------
@@ -146,3 +147,4 @@ st.dataframe(
     ],
     use_container_width=True
 )
+"""
