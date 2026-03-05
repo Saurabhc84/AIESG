@@ -48,6 +48,39 @@ filtered = df[
     (df["date"] <= pd.to_datetime(date_range[1])) &
     (df["scenario"].isin(selected_scenarios))
 ]
+## New code start
+base = alt.Chart(filtered).encode(
+    x=alt.X(
+        "date:T",
+        title="Date",
+        axis=alt.Axis(
+            format="%d-%b",
+            labelAngle=-45,
+            grid=False
+        )
+    ),
+    tooltip=[
+        alt.Tooltip("scenario:N", title="Scenario"),
+        alt.Tooltip("date:T", title="Date", format="%d-%b-%Y"),
+        alt.Tooltip("final_esg_score:Q", title="Total ESG Score", format=".2f")
+    ]
+)
+
+line_total = base.mark_line(
+    point=True,
+    strokeWidth=3
+).encode(
+    y=alt.Y(
+        "final_esg_score:Q",
+        title="Total ESG Score",
+        scale=alt.Scale(domain=[0, 100])
+    )
+)
+
+st.altair_chart(line_total, use_container_width=True)
+
+##New Code end
+
 
 # ----------------------------------------------------
 # Main ESG score chart
