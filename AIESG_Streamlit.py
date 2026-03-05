@@ -106,6 +106,19 @@ chart = line + points + tooltips
 
 st.altair_chart(chart, use_container_width=True)
 
+
+
+line_total = alt.Chart(filtered).mark_line(point=True, strokeWidth=3).encode(
+    x=alt.X("date:T", axis=alt.Axis(format="%d-%b", labelAngle=-45)),
+    y=alt.Y("final_esg_score:Q", title="Total ESG Score"),
+    color=alt.condition(
+        alt.datum.final_esg_score >= 70,
+        alt.value("#2ca02c"),  # green
+        alt.value("#d62728")   # red
+    ),
+    tooltip=["date:T", "final_esg_score"]
+)
+
 """
 # ----------------------------------------------------
 # Main ESG score chart
