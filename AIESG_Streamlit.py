@@ -118,8 +118,6 @@ st.dataframe(
 
 ## New code start
 
-  import altair as alt
-import pandas as pd
 
 filtered["date"] = pd.to_datetime(filtered["date"])
 
